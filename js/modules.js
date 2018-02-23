@@ -376,7 +376,7 @@ class Dashboard extends React.Component {
 // ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
 
 
-ajaxGet("../data/modules.json", (response) => {
+ajaxGet("data/modules.json", (response) => {
     const MODULES = JSON.parse(response);
 
     ReactDOM.render(
