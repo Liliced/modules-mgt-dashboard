@@ -35,40 +35,27 @@ function newId(array) {
 // ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝    ╚═╝        ╚═════╝  ╚═════╝    ╚═╝      ╚═╝    ╚═════╝ ╚═╝  ╚═══╝
 
 
-// Modal
-class Modal extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleClickClose = this.handleClickClose.bind(this);
-	}
-
-	handleClickClose() {
-		this.props.onClickClose();
-	}
-
-	render() {
-		return(
-			<div className='modal'>
-				<div className='modal-content'>
-					<span className='modal-close' onClick={this.handleClickClose}>&times;</span>
-					<div>
-						{this.props.children}
-					</div>
+function Modal(props) {
+	return(
+		<div className='modal'>
+			<div className='modal-content'>
+				<span aria-label="Close" className='modal-close' onClick={props.onClose}>&times;</span>
+				<div>
+					{props.children}
 				</div>
 			</div>
-		);
-	}
+		</div>
+	);
 }
 
 
-// Form
 class Form extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			title: this.props.title,
 			description: this.props.description
-		}
+		};
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
@@ -93,7 +80,7 @@ class Form extends React.Component {
 
 	render() {
 		return(
-			<form>
+			<form onSubmit={this.handleSubmit}>
 				<p>
 					<label htmlFor='title'>Titre :</label>
 					<input name='title'
@@ -109,8 +96,7 @@ class Form extends React.Component {
 							  onChange={this.handleInputChange} />
 				</p>
 				<input type='submit'
-					   value='Valider'
-					   onClick={this.handleSubmit} />	
+					   value='Valider' />
 			</form>
 		);
 	}
@@ -118,26 +104,13 @@ class Form extends React.Component {
 
 
 // Button to add a module
-class ButtonAdd extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-
-	handleClick() {
-		this.props.onClick();
-	}
-
-
-	render() {
-		return(
-			<button className='btn-add' onClick={this.handleClick}>
-				<i className='fas fa-plus icon'></i>
-				Ajouter un module
-			</button>
-		);
-	}
+function ButtonAdd(props) {
+	return(
+		<button className='btn-add' onClick={props.onClick}>
+			<i className='fas fa-plus icon'></i>
+			Ajouter un module
+		</button>
+	);
 }
 
 
@@ -160,27 +133,16 @@ function ModuleBody(props) {
 }
 
 
-// Title + Edit button + Delete button of module
-class ModuleHeader extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleIsCollapsedChange = this.handleIsCollapsedChange.bind(this);
-	}
-
-	handleIsCollapsedChange() {
-		this.props.onIsCollapsedChange();
-	}
-
-	render() {
-		return(
-			<div className='module-header'>
-				<p className='module-header-title' onClick={this.handleIsCollapsedChange}>
-					{this.props.title}
-				</p>
-				{this.props.children}
-			</div>
-		);
-	}
+// Title + Edit/Delete button (as children)
+function ModuleHeader(props) {
+	return(
+		<div className='module-header'>
+			<p className='module-header-title' onClick={props.onIsCollapsedChange}>
+				{props.title}
+			</p>
+			{props.children}
+		</div>
+	);
 }
 
 
@@ -192,7 +154,7 @@ class Module extends React.Component {
 			isCollapsed: true,
 			showEditModal: false,
 			showDeleteModal: false
-		}
+		};
 		this.handleIsCollapsedChange = this.handleIsCollapsedChange.bind(this);
 		this.handleShowEditModalChange = this.handleShowEditModalChange.bind(this);
 		this.handleShowDeleteModalChange = this.handleShowDeleteModalChange.bind(this);
@@ -262,7 +224,7 @@ class Module extends React.Component {
 				
 				{/*Modal to edit module*/}
 				{ this.state.showEditModal &&
-					<Modal onClickClose={this.handleShowEditModalChange}>
+					<Modal onClose={this.handleShowEditModalChange}>
 						<h3>Modifier un module</h3>
 						
 						<Form title={this.props.module.title}
@@ -273,7 +235,7 @@ class Module extends React.Component {
 				
 				{/*Modal to delete module*/}
 				{ this.state.showDeleteModal &&
-					<Modal onClickClose={this.handleShowDeleteModalChange}>
+					<Modal onClose={this.handleShowDeleteModalChange}>
 						<h3>Supprimer un module</h3>
 						
 						<div className='modal-delete-content'>
@@ -298,39 +260,21 @@ class Module extends React.Component {
 
 
 class ModuleList extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleModuleEdit = this.handleModuleEdit.bind(this);
-		this.handleModuleDelete = this.handleModuleDelete.bind(this);
-	}
-
-
-	handleModuleEdit(module) {
-		this.props.onModuleEdit(module);
-	}
-
-	handleModuleDelete(module) {
-		this.props.onModuleDelete(module);
-	}
-
-
 	render() {
 		const listModules = this.props.modules.map((module) =>
 			<Module key={module.id}
 					module={module}
-					onModuleEdit={this.handleModuleEdit}
-					onModuleDelete={this.handleModuleDelete} />
+					onModuleEdit={this.props.onModuleEdit}
+					onModuleDelete={this.props.onModuleDelete} />
 		);
 		
 		return(
 			<div>
-		    	{listModules}
-		    </div>
+				{listModules}
+			</div>
 		);
 	}
 }
-
-
 
 
 class Dashboard extends React.Component {
@@ -339,7 +283,7 @@ class Dashboard extends React.Component {
 		this.state = {
 			modules: this.props.modules,
 			showAddModal: false
-		}
+		};
 		this.handleShowAddModalChange = this.handleShowAddModalChange.bind(this);
 		this.handleModulesChange = this.handleModulesChange.bind(this);
 		this.handleModuleAdd = this.handleModuleAdd.bind(this);
@@ -410,7 +354,7 @@ class Dashboard extends React.Component {
 				<ButtonAdd onClick={this.handleShowAddModalChange} />
 				
 				{ this.state.showAddModal &&
-					<Modal onClickClose={this.handleShowAddModalChange}>
+					<Modal onClose={this.handleShowAddModalChange}>
 						<h3>Ajouter un module</h3>
 						<Form title=''
 							  description=''
@@ -440,17 +384,3 @@ ajaxGet("../data/modules.json", (response) => {
 		document.getElementById('content')
 	);
 });
-
-
-// const MODULES = [
-// 	{id: 1, title: 'Module A', description: 'Description du module A'},
-// 	{id: 2, title: 'Module B', description: 'Description du module B'},
-// 	{id: 3, title: 'Module C', description: 'Description du module C'},
-// 	{id: 4, title: 'Module D', description: 'Description du module D'},
-// 	{id: 5, title: 'Module E', description: 'Description du module E'}
-// ];
-// 
-// ReactDOM.render(
-// 	<Dashboard modules={MODULES} />,
-// 	document.getElementById('content')
-// );
