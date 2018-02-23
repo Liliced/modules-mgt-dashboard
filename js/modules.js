@@ -150,6 +150,16 @@ class ButtonAdd extends React.Component {
 // ╚═╝     ╚═╝ ╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝
 
 
+// Description of module
+function ModuleBody(props) {
+	return(
+		<div className='module-body'>
+			{props.description}
+		</div>
+	);
+}
+
+
 // Title + Edit button + Delete button of module
 class ModuleHeader extends React.Component {
 	constructor(props) {
@@ -168,20 +178,6 @@ class ModuleHeader extends React.Component {
 					{this.props.title}
 				</p>
 				{this.props.children}
-			</div>
-		);
-	}
-}
-
-// Description of module
-class ModuleBody extends React.Component {
-	render() {
-		if (this.props.isCollapsed) {
-			return null;
-		}
-		return(
-			<div className='module-body'>
-				{this.props.description}
 			</div>
 		);
 	}
