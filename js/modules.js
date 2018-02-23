@@ -19,7 +19,7 @@ function getIndexById(array, id) {
 
 // Calculate a consistent new id in array (max of existing id + 1)
 function newId(array) {
-	const maxId = Math.max.apply(Math,array.map((element) => {
+	const maxId = Math.max.apply(Math, array.map((element) => {
 		return element.id;
 	}));
 	return maxId + 1;
@@ -132,7 +132,7 @@ class ButtonAdd extends React.Component {
 
 	render() {
 		return(
-			<button id='btn-add' onClick={this.handleClick}>
+			<button className='btn-add' onClick={this.handleClick}>
 				<i className='fas fa-plus icon'></i>
 				Ajouter un module
 			</button>
