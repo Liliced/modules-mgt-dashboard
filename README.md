@@ -1,10 +1,10 @@
-#Modules Management Dashboard
+# Modules Management Dashboard
 
 **This small webapp offers an interface to manage modules.**
 It was developped as an exercise to learn React.
 
 
-##Goals
+## Goals
 
 Expected functionalities were the following :
 
@@ -13,7 +13,7 @@ Expected functionalities were the following :
 3. Offer the possibility to create / update / delete a module
 
 
-##Technologies used
+## Technologies used
 
 - HTML
 - CSS
