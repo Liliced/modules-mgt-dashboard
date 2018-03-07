@@ -22,6 +22,8 @@ Expected functionalities were the following :
 
 ## How it works
 
+To simplify, modules are basic objects with an id, a title and a description.
+
 1. An **AJAX request** fetches data from a json file and passes the resulting array of modules to a "Dashboard" React component.
 
 2. The **Dashboard component** manages the array of modules and the "create module" Modal.  
