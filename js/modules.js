@@ -445,7 +445,7 @@ class Dashboard extends React.Component {
 // ██████╔╝██║  ██║   ██║   ██║  ██║
 // ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
 
-// Data fixture is fetch from a json file with AJAX
+// Data fixture is fetched from a json file with AJAX
 ajaxGet("data/modules.json", (response) => {
     const MODULES = JSON.parse(response);
 
