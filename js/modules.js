@@ -9,6 +9,7 @@
 
 
 // Get index in array of a given object id
+// Called by Dashboard when updating or deleting a module
 function getIndexById(array, id) {
     for (let i = 0; i < array.length; i++) {
         if (array[i].id === id) {
@@ -18,6 +19,7 @@ function getIndexById(array, id) {
 }
 
 // Calculate a consistent new id in array (max of existing id + 1)
+// Called by Dashboard to creating a module
 function newId(array) {
     const maxId = Math.max.apply(Math, array.map((element) => {
         return element.id;
@@ -27,14 +29,17 @@ function newId(array) {
 
 
 
-// ███╗   ███╗ ██████╗ ██████╗  █████╗ ██╗             ██╗    ██████╗ ██╗   ██╗████████╗████████╗ ██████╗ ███╗   ██╗
-// ████╗ ████║██╔═══██╗██╔══██╗██╔══██╗██║            ██╔╝    ██╔══██╗██║   ██║╚══██╔══╝╚══██╔══╝██╔═══██╗████╗  ██║
-// ██╔████╔██║██║   ██║██║  ██║███████║██║           ██╔╝     ██████╔╝██║   ██║   ██║      ██║   ██║   ██║██╔██╗ ██║
-// ██║╚██╔╝██║██║   ██║██║  ██║██╔══██║██║          ██╔╝      ██╔══██╗██║   ██║   ██║      ██║   ██║   ██║██║╚██╗██║
-// ██║ ╚═╝ ██║╚██████╔╝██████╔╝██║  ██║███████╗    ██╔╝       ██████╔╝╚██████╔╝   ██║      ██║   ╚██████╔╝██║ ╚████║
-// ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝    ╚═╝        ╚═════╝  ╚═════╝    ╚═╝      ╚═╝    ╚═════╝ ╚═╝  ╚═══╝
+// ███╗   ███╗ ██████╗ ██████╗ ██╗   ██╗██╗     ███████╗        ██╗    ███████╗ ██████╗ ██████╗ ███╗   ███╗
+// ████╗ ████║██╔═══██╗██╔══██╗██║   ██║██║     ██╔════╝       ██╔╝    ██╔════╝██╔═══██╗██╔══██╗████╗ ████║
+// ██╔████╔██║██║   ██║██║  ██║██║   ██║██║     █████╗        ██╔╝     █████╗  ██║   ██║██████╔╝██╔████╔██║
+// ██║╚██╔╝██║██║   ██║██║  ██║██║   ██║██║     ██╔══╝       ██╔╝      ██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║
+// ██║ ╚═╝ ██║╚██████╔╝██████╔╝╚██████╔╝███████╗███████╗    ██╔╝       ██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║
+// ╚═╝     ╚═╝ ╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝    ╚═╝        ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
 
 
+// *** Rendered by Module ***
+// Returns a div with "X" close + form (as props child)
+// Props : function to handle "close modal" event
 function Modal(props) {
     return(
         <div className='modal'>
@@ -49,6 +54,18 @@ function Modal(props) {
 }
 
 
+// *** Rendered by Module ***
+// Returns a form with input title + textarea description
+// State :
+// - value of title
+// - value of description
+// Functions to handle :
+// - state changes (input values)
+// - event "form submit"
+// Props :
+// - string title
+// - string description
+// - function to handle form submit
 class Form extends React.Component {
     constructor(props) {
         super(props);
@@ -103,7 +120,9 @@ class Form extends React.Component {
 }
 
 
-// Button to add a module
+// *** Rendered by Dashboard ***
+// Returns a button "add a module"
+// Props : function to handle click
 function ButtonAdd(props) {
     return(
         <button className='btn-add' onClick={props.onClick}>
@@ -123,7 +142,9 @@ function ButtonAdd(props) {
 // ╚═╝     ╚═╝ ╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝╚══════╝
 
 
-// Description of module
+// *** Rendered by Module ***
+// Returns a div with description of module
+// Props : string description
 function ModuleBody(props) {
     return(
         <div className='module-body'>
@@ -133,7 +154,11 @@ function ModuleBody(props) {
 }
 
 
-// Title + Edit/Delete button (as children)
+// *** Rendered by Module ***
+// Returns a div with Title + Edit/Delete button (as props children)
+// Props :
+// - string title
+// - function to handle ModuleBody collapse
 function ModuleHeader(props) {
     return(
         <div className='module-header'>
@@ -146,7 +171,24 @@ function ModuleHeader(props) {
 }
 
 
-// Module (manages view + edit/delete modals)
+// *** Rendered by ModuleList ***
+// Return :
+// - ModuleHeader component with module title + edit/delete buttons
+// - [ModuleBody component with module description (if not collapsed)]
+// - [Modal "edit module" with edit form (if visible)]
+// - [Modal "delete module" with confirmation button (if visible)]
+// State :
+// - boolean of ModuleBody collapse
+// - boolean of EditModal visibility
+// - boolean of DeleteModal visibility
+// Functions to handle :
+// - state changes (ModuleBody and Modals visibility)
+// - event "edit module"
+// - event "delete module"
+// Props :
+// - object module (id, title and description)
+// - function to handle event "edit module"
+// - function to handle event "delete module"
 class Module extends React.Component {
     constructor(props) {
         super(props);
@@ -208,10 +250,12 @@ class Module extends React.Component {
                 <ModuleHeader title={this.props.module.title}
                               onIsCollapsedChange={this.handleIsCollapsedChange}>
                     <div>
-                        <button aria-label='Modifier' className='btn-header' onClick={this.handleShowEditModalChange}>
+                        <button aria-label='Modifier' className='btn-header'
+                                onClick={this.handleShowEditModalChange}>
                             <i className='fas fa-pencil-alt'></i>
                         </button>
-                        <button aria-label='Supprimer' className='btn-header' onClick={this.handleShowDeleteModalChange}>
+                        <button aria-label='Supprimer'className='btn-header'
+                                onClick={this.handleShowDeleteModalChange}>
                             <i className='fas fa-trash-alt'></i>
                         </button>
                     </div>
@@ -259,6 +303,12 @@ class Module extends React.Component {
 // ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ 
 
 
+// *** Rendered by Dashboard ***
+// Goes through the array of modules and convert them into Module components
+// Props :
+// - array of modules
+// - function to handle event "edit module"
+// - function to handle event "delete module"
 class ModuleList extends React.Component {
     render() {
         const listModules = this.props.modules.map((module) =>
@@ -277,6 +327,20 @@ class ModuleList extends React.Component {
 }
 
 
+// Main component
+// Return :
+// - ModuleList component with the list of modules
+// - ButtonAdd component to show modal "AddModal" to create a module
+// - [Modal component AddModal (if visible)]
+// State :
+// - array of modules
+// - boolean storing wether AddModal must be visible or not
+// Functions to handle :
+// - state changes (AddModal visibility + create/update/delete module)
+// - event "add module"
+// - event "delete module"
+// Props :
+// - original list of modules
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
@@ -297,9 +361,11 @@ class Dashboard extends React.Component {
         })
     }
 
+    // Function to handle create, update and delete of modules
     handleModulesChange(module, toDelete = false) {
         const modules = this.state.modules.slice();
         
+        // Case "create a module"
         if (!module.id) {
             const newModule = {
                 id: newId(modules),
@@ -311,10 +377,11 @@ class Dashboard extends React.Component {
         }
         else {
             const index = getIndexById(modules, module.id);
-            
+            // Case "delete a module"
             if (toDelete) {
                 modules.splice(index, 1);
             }
+            // Case "update a module"
             else {
                 modules[index].title = module.title;
                 modules[index].description = module.description;
@@ -347,12 +414,15 @@ class Dashboard extends React.Component {
             <div>
                 <h1>Liste des modules</h1>
                 
+                // List of all modules
                 <ModuleList modules={this.state.modules}
                             onModuleEdit={this.handleModulesChange}
                             onModuleDelete={this.handleModuleDelete} />
                 
+                // Button to show modal to create a module
                 <ButtonAdd onClick={this.handleShowAddModalChange} />
                 
+                // Modal with form to create a new module
                 { this.state.showAddModal &&
                     <Modal onClose={this.handleShowAddModalChange}>
                         <h3>Ajouter un module</h3>
@@ -375,7 +445,7 @@ class Dashboard extends React.Component {
 // ██████╔╝██║  ██║   ██║   ██║  ██║
 // ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
 
-
+// Fixture data is fetch from a json file with AJAX
 ajaxGet("data/modules.json", (response) => {
     const MODULES = JSON.parse(response);
 
