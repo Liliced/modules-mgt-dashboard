@@ -39,7 +39,7 @@ function Modal(props) {
     return(
         <div className='modal'>
             <div className='modal-content'>
-                <span aria-label="Close" className='modal-close' onClick={props.onClose}>&times;</span>
+                <span aria-label='Fermer' className='modal-close' onClick={props.onClose}>&times;</span>
                 <div>
                     {props.children}
                 </div>
@@ -208,10 +208,10 @@ class Module extends React.Component {
                 <ModuleHeader title={this.props.module.title}
                               onIsCollapsedChange={this.handleIsCollapsedChange}>
                     <div>
-                        <button className='btn-header' onClick={this.handleShowEditModalChange}>
+                        <button aria-label='Modifier' className='btn-header' onClick={this.handleShowEditModalChange}>
                             <i className='fas fa-pencil-alt'></i>
                         </button>
-                        <button className='btn-header' onClick={this.handleShowDeleteModalChange}>
+                        <button aria-label='Supprimer' className='btn-header' onClick={this.handleShowDeleteModalChange}>
                             <i className='fas fa-trash-alt'></i>
                         </button>
                     </div>
