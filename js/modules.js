@@ -414,15 +414,15 @@ class Dashboard extends React.Component {
             <div>
                 <h1>Liste des modules</h1>
                 
-                // List of all modules
+                {/*List of all modules*/}
                 <ModuleList modules={this.state.modules}
                             onModuleEdit={this.handleModulesChange}
                             onModuleDelete={this.handleModuleDelete} />
                 
-                // Button to show modal to create a module
+                {/*Button to show modal to create a module*/}
                 <ButtonAdd onClick={this.handleShowAddModalChange} />
                 
-                // Modal with form to create a new module
+                {/*Modal with form to create a new module*/}
                 { this.state.showAddModal &&
                     <Modal onClose={this.handleShowAddModalChange}>
                         <h3>Ajouter un module</h3>
