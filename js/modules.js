@@ -249,7 +249,7 @@ class Module extends React.Component {
                 {/*Module title + edit/delete buttons*/}
                 <ModuleHeader title={this.props.module.title}
                               onIsCollapsedChange={this.handleIsCollapsedChange}>
-                    <div>
+                    <div className='flex'>
                         <button aria-label='Modifier' className='btn-header'
                                 onClick={this.handleShowEditModalChange}>
                             <i className='fas fa-pencil-alt'></i>
@@ -358,7 +358,7 @@ class Dashboard extends React.Component {
     handleShowAddModalChange() {
         this.setState({
             showAddModal: !this.state.showAddModal
-        })
+        });
     }
 
     // Function to handle create, update and delete of modules
